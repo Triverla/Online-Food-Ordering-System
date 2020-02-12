@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\User;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
@@ -69,5 +70,26 @@ class UserController extends Controller
         }
         \DB::rollBack();
         return response('Something went wrong', 504);
+    }
+
+    public function account(){
+        $orders = Order::distinct()->groupBy('order_id')->orderBy('created_at', 'DESC')
+        ->where('user_id',auth()->user()->id)->paginate(10);
+        return view('account',compact('orders'));
+    }
+
+    public function updateDeliveryLocation(Request $request)
+    {
+        
+            $user = User::find(auth()->user()->id);
+ 
+            $user->delivery_location = $request->location;
+            $user->address = $request->address;
+ 
+            $user->save();
+ 
+            session()->flash('success', 'Delivery Address updated successfully');
+            return redirect()->back();
+        
     }
 }

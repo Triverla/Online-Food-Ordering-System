@@ -8,8 +8,8 @@
     <h1>Checkout</h1>
   </div>
   <div class="row">
-    <div class="col-md-8">
- <h3 class="text-center">Your Information</h3>
+    <div class="col-md-4">
+ <h3 class="text-center">Personal Information</h3>
     <form method="POST" action="">
     @csrf
     <div class="form-group">
@@ -24,11 +24,39 @@
         <label>Phone Number</label>
         <input type="text" name="phone" class="form-control" value="{{auth()->user()->phone}}" readonly>
     </div>
-    <div class="form-group">
-        <label>Address</label>
-      <textarea name="address" class="form-control" value="" cols="10" rows="5" readonly>{{auth()->user()->address}}</textarea>
-    </div>
 </form>
+</div>
+<div class="col-md-4">
+    <h3>Update Delivery Location</h3>
+    <small><b>Note:</b> Your default location and address will be used</small>
+    <form method="POST" action="{{route('update-location')}}">
+        @csrf
+        <div class="form-group">
+            <label>Delivery Location</label>
+            @php
+               $location = App\Delivery::get();
+            @endphp
+            <select class="form-control" name="location">
+                <option selected>--Select Location--</option>
+                @if(auth()->user()->delivery_location == null)
+                @foreach($location as $loc)
+                <option value="{{$loc->id}}" @if(auth()->user()->delivery_location == $loc->id)selected @endif data-toggle="tooltip" data-placement="right" title="{{$loc->description}}">{{$loc->location}}[&#x20A6;{{$loc->cost}}]</option>
+                @endforeach
+                @else
+                @foreach($location as $loc)
+                <option value="{{$loc->id}}" @if(auth()->user()->delivery_location == $loc->id)selected @endif data-toggle="tooltip" data-placement="right" title="{{$loc->description}}">{{$loc->location}}[&#x20A6;{{$loc->cost}}]</option>
+                @endforeach
+                @endif
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+          <textarea name="address" class="form-control" value="" cols="10" rows="5">{{auth()->user()->address}}</textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+    </form>
 </div>
 <div class="col-md-4">
 <h4><a class="btn btn-link" href="{{route('cart')}}"><i class="fa fa-angle-left"></i> Return to Cart</a></h4>
@@ -68,11 +96,31 @@
               </div>
           @endforeach
       @endif
+      @if(auth()->user()->delivery_location != null)
+      <div class="row cart-detail">
+        <div class="col-lg-4 col-sm-4 col-4 cart-detail-img">
+            <p>Delivery Cost</p>
+        </div>
+        <div class="col-lg-8 col-sm-8 col-8 cart-detail-product">
+            @php
+                $cost = App\Delivery::find(auth()->user()->delivery_location)->cost;  
+            @endphp
+        <span class="price text-info"> &#x20A6;{{$cost}}</span>
+        </div>
+        </div>
+      @endif
   </div>
   <div class="card-footer">
       <div class="row">
+        @php
+         if(auth()->user()->delivery_location != null){
+             $cost = App\Delivery::find(auth()->user()->delivery_location)->cost;
+         }else{
+             $cost = 0;
+         }  
+    @endphp
           <div class="col-lg-12 col-sm-12 col-12 text-center checkout">
-            <p>Total: <span class="text-info text-center">&#x20A6; {{ number_format($total) }}</span></p>
+            <p>Total: <span class="text-info text-center">&#x20A6; {{ number_format($total + $cost) }}</span></p>
           </div>
       </div>
   </div>
@@ -80,7 +128,41 @@
 </div>
   </div>
   <div class="col-md-6 offset-3">
-  <a href="#" class="btn btn-primary btn-lg align-content-center text-center"><i class="fa fa-cc-visa"></i> Proceed to Payment</a>
+    @if(auth()->user()->delivery_location == null)
+    <br>
+  <a href="#" class="btn btn-primary btn-lg align-content-center text-center" onclick="alert('Choose Delivery Location before you proceed!');"> Proceed to Payment</a>
+  @else
+  <br>
+  <form action="{{route('order.store')}}" method="post">
+    @csrf
+  <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
+  <input type="submit" name="submit" value="Confirm Order" class="btn btn-primary btn-lg align-content-center text-center">
+  </form>
+  @endif
   </div>
+  
 </div>
+@endsection
+@section('js')
+ 
+ 
+    <script type="text/javascript">
+ 
+        $(".update-location").click(function (e) {
+           e.preventDefault();
+ 
+           var ele = $(this);
+ 
+            $.ajax({
+               url: '{{ url('update-location') }}',
+               method: "patch",
+               data: {_token: '{{ csrf_token() }}', id: ele.attr("data-id"), location: ele.parents("input").find("#location").val()},
+               success: function (response) {
+                   window.location.reload();
+               }
+            });
+        });
+ 
+    </script>
+ 
 @endsection

@@ -6,8 +6,10 @@ use App\Http\Resources\OrderResponce;
 use App\Order;
 use App\User;
 use App\Food;
+use App\Delivery;
 use Illuminate\Http\Request;
 use Mockery\Exception;
+use DB;
 
 class OrderController extends Controller
 {
@@ -114,7 +116,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return OrderResponce::collection(Order::with(['foods.category','user'])->latest()->get());
+        $orders = Order::distinct()->groupBy('order_id')->orderBy('created_at', 'DESC')->paginate(10);
+       // $orders = Order::groupBy('order_id')->select('order_id', DB::raw('count(*) as total'))
+        //->select('order_id', DB::raw('count(*) as total'))->get();
+        return view('orders.index', compact('orders'));
+        //return OrderResponce::collection(Order::with(['foods.category','user'])->latest()->get());
     }
 
     /**
@@ -135,39 +141,50 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            \DB::beginTransaction();
-            $user = User::find($request->user_id);
+            $cart = session()->get('cart');
+            $order_id = date('dmyhis');
+        foreach($cart as $id => $food){
+            $total = $food['price'] * $food['quantity'];
             $order = new Order();
-            $order->user()->associate($user);
-            $order->address = $request->get('address' , $user->address);
-            $order->total_money = 0;
-            if ($order->save()) {
-                $order->foods()->sync($request->foods);
-                foreach ($order->foods as $food)
-                    $order->total_money += $food->price;
-                if ($order->save()) {
-                    \DB::commit();
-                    return response('', 200);
-                }
-            }
-            \DB::rollBack();
-            return response('', 500);
-        } catch (\Exception $exception) {
-            \DB::rollBack();
-            return response('', 500);
+            $order->order_id = $order_id;
+            $order->location = auth()->user()->delivery_location;
+            $order->address = auth()->user()->address;
+            $order->user_id = $request->get('user_id');
+            $order->food_id = $food['id'];
+            $order->quantity = $food['quantity'];
+            $order->price = $food['price'];
+            $order->total_money = $total;
+            $order->save();
         }
-    }
+        $data = [
+            'name'=> auth()->user()->name,
+            'email'=> auth()->user()->email,
+            'phone' => auth()->user()->phone,
+            'location' => Delivery::find(auth()->user()->delivery_location)->location,
+            'address' => auth()->user()->address,
+            'cart' => $cart,
+            'order_id' => $order_id,
+            'cost' => Delivery::find(auth()->user()->delivery_location)->cost,
+            'date' => now()
+        ];
 
+        //Mail::to($email)->send(New ClientOrderMail($data));
+        //Mail::to('yusufbenaiah@gmail.com')->send(New AdminOrderMail($data));
+         //session()->flush();
+        return view('success', compact('data')); 
+    }
+    
     /**
      * Display the specified resource.
      *
      * @param  \App\Order $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show($order_id)
     {
-        //
+        $order = Order::where('order_id',$order_id)->get();
+       // dd($order);
+        return view('orders.show',compact('order'));
     }
 
     /**

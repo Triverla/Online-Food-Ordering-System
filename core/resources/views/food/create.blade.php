@@ -2,8 +2,6 @@
 @section('title','Add Food')
 
 @section('content')
-<section id="section-home" style="min-height: 500px; background-image: url('../images/bg10.jpg'); background-size: cover; background-repeat: no-repeat;">
-</section>
 <br>
 <div class="container">
     <div class="row justify-content-center">

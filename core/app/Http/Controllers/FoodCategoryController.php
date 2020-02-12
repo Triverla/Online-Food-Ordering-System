@@ -21,8 +21,11 @@ class FoodCategoryController extends Controller
      */
     public function index()
     {
-        return CategoryResource::collection(FoodCategory::all());
+        $categories = FoodCategory::paginate(10);
+        
+        return view('food.category',compact('categories'));
     }
+
 
     /**
      * Store a newly created resource in storage.

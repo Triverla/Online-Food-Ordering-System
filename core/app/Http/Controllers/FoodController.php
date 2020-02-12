@@ -6,6 +6,7 @@ use App\Comment;
 use App\Food;
 use App\Http\Resources\FoodResource;
 use App\Photo;
+use App\FoodCategory;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
@@ -23,6 +24,18 @@ class FoodController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
+    {
+        $foods = Food::paginate(10);
+        
+        return view('food.index',compact('foods'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index1(Request $request)
     {
         $text = $request->get('query');
         return FoodResource::collection(Food::with(['photos', 'category', 'comments.user'])->when($text, function ($query) use ($text) {

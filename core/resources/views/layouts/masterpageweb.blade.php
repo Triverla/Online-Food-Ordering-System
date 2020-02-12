@@ -5,7 +5,7 @@
   <!-- 
     More Templates Visit ==> Free-Template.co
     -->
-  <title>Puzzo Restaurant ~ @yield('title')</title>
+  <title>@yield('title') ~ Puzzo </title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="puzzo" />
@@ -39,7 +39,7 @@
 <body data-spy="scroll" data-target="#ftco-navbar" data-offset="200">
 <div id="wrapper">
 @include('layouts.shared.headerweb')
-<section id="section-home" style="min-height: 500px; background-image: url('images/bg10.jpg'); background-size: cover; background-repeat: no-repeat;">
+<section id="section-home" style="min-height: 500px; background-image: url('{{asset('images/bg10.jpg')}}'); background-size: cover; background-repeat: no-repeat;">
   @if ($message = Session::get('success'))
   <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
     <!-- Position it -->
@@ -94,7 +94,10 @@
   <script src="{{asset('js/jquery.animateNumber.min.js')}}"></script>
   <script src="{{asset('js/instafeed.min.js')}}"></script>
 <script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip();
   $('.toast').toast('show');
+})
   </script>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false">

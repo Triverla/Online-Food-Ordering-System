@@ -51,7 +51,7 @@
             <td class="text-center"><strong>Total &#x20A6;{{ number_format($total) }}</strong></td>
         </tr>
         <tr>
-            <td><a href="{{ url('/') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+            <td><a href="{{ url('menu#menu') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
             <td colspan="2" class="hidden-xs"></td>
             <td class="hidden-xs text-center"><strong>Total &#x20A6;{{ number_format($total) }}</strong></td>
             @php

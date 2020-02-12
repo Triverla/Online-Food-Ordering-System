@@ -106,7 +106,7 @@
 }
       </style>
 <br>
-<div class="container">
+<div class="container" id="menu">
     <div class="row">
         <div class="col-md-8">
             <h3>Puzzo's Menu</h3>
@@ -120,7 +120,7 @@
                     <div class="card">
                     <div class="card-header" id="heading-{{$category->id}}">
                         <h2 class="mb-0">
-                          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{$category->id}}" aria-expanded="true" aria-controls="collapse-{{$category->id}}">
+                          <button class="btn btn-link h4" type="button" data-toggle="collapse" data-target="#collapse-{{$category->id}}" aria-expanded="true" aria-controls="collapse-{{$category->id}}">
                             {{$category->name}}&nbsp;<i class="fa fa-angle-down"></i>
                           </button>
                           <button class="btn btn-primary btn-sm float-right" type="button" data-toggle="collapse" data-target="#collapse-{{$category->id}}" aria-expanded="true" aria-controls="collapse-{{$category->id}}">
@@ -197,7 +197,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-lg-12 col-sm-12 col-12 text-center checkout">
-                            <a href="{{ url('cart') }}" class="btn btn-primary btn-block">View all</a>
+                            <a href="{{ url('cart') }}" class="btn btn-primary btn-block">View Cart</a>
                         </div>
                     </div>
                 </div>
