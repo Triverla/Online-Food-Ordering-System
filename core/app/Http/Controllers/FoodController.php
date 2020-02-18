@@ -79,7 +79,8 @@ class FoodController extends Controller
             $i++;
         }
         \DB::commit();
-        return new FoodResource($food);
+        toast('Food added successfully!','success');
+        return redirect()->route('food.index');
     }
 
     /**
@@ -119,20 +120,23 @@ class FoodController extends Controller
         }
         if($request->hasfile('img'))
      {
-        foreach ($request->file('img') as $photo) {
+        foreach ($request->img as $photo) {
+            //dd($photo);
             $png_url = "/img/" . time() . "_" . $i . ".png";
-            $path = "/storage" . $png_url;
+            $path = "storage" . $png_url;
             Image::make($photo)->fit(500, 500)->save($path);
             $img = new Photo();
             $img->path = $png_url;
             $img->food_id = $food->id;
+            //$img->save();
             if (!$img->save())
-                \DB::rollBack();
+               \DB::rollBack();
             $i++;
         }
         \DB::commit();
     }
-        return new FoodResource(Food::with(['photos','comments','category'])->find($food->id));
+    toast('Food update successful!','success');
+        return redirect()->route('food.index');
     }
 
     /**
@@ -141,12 +145,14 @@ class FoodController extends Controller
      * @param  \App\Food $food
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Food $food)
+    public function destroy($id)
     {
-        foreach ($food->photos as $photo) {
-            $photo->delete();
-        }
-        $food->delete();
+            $food = Food::find($id);
+            if($food->delete()){
+                Photo::where('food_id',$id)->delete();
+            }
+            toast('Food deleted successfully!','success');
+            return redirect()->back();
     }
 
     public function createComment(Request $request)

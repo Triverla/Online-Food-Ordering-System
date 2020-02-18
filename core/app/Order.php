@@ -36,4 +36,13 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function checkDispatch($id){
+        $dispatch = Order::where('order_id', $id)->first();
+            if($dispatch->status == 1){
+                return true;
+            }else{
+                return false;
+            }
+    }
 }

@@ -13,7 +13,7 @@
             <th>Description</th>
             <th>Price</th>
             <th>Category</th>
-            <th>Actions</th>
+            <th colspan="2">Actions</th>
         </thead>
         <tbody>
             @foreach ($foods as $food)
@@ -25,8 +25,12 @@
             <td>{{App\FoodCategory::find($food->category_id)->name}}</td>
             <td>
                 <a class="text-success" href=""><i class="fa fa-eye"></i>
-                <a class="text-info" href=""><i class="fa fa-edit"></i>
-                <a class="text-danger" href=""><i class="fa fa-trash"></i>
+                <a class="text-info" href=""><i class="fa fa-edit"></i></td>
+                    <td><form action="{{ route('food.delete', $food->id)}}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn-link" type="submit"><i class="fa fa-trash"></i></button>
+                      </form>
             </td>
         </tr>    
                 @endforeach

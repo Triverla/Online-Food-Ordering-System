@@ -17,11 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('dashboard', function () {
-    $foodcount = Food::count();
-    $categorycount = FoodCategory::count();
-    return view('dashboard',compact('foodcount','categorycount'));
-});
 Route::get('menu', function () {
     $categories = FoodCategory::paginate(10);
     
@@ -30,31 +25,44 @@ Route::get('menu', function () {
 
 Route::get('cart', 'OrderController@cart')->name('cart');
 Route::get('add-to-cart/{id}', 'OrderController@addToCart')->name('addtocart');
-Route::patch('update-cart', 'OrderController@updatecart');
+Route::patch('update-cart/{id}', 'OrderController@updatecart')->name('update-cart');
+Route::patch('sub-qty/{id}', 'OrderController@subQty')->name('update-cart');
 Route::delete('remove-from-cart', 'OrderController@remove');
 Route::get('/login', 'UserController@loginpage')->name('login');
 
 Route::middleware('auth')->group(function(){
 Route::get('account', 'UserController@account')->name('account');
 Route::post('update-location', 'UserController@updateDeliveryLocation')->name('update-location');
-Route::get('delivery-cost/', 'DeliveryController@index')->name('del.index');
-Route::get('delivery-cost/create', 'DeliveryController@create')->name('del.create');
-Route::post('delivery-cost/create', 'DeliveryController@store')->name('del.store');
 Route::get('checkout', 'OrderController@checkout')->name('checkout');
 Route::post('checkout/delivery', 'DeliveryController@checkout')->name('del.checkout');
-Route::get('/food/create', 'FoodController@create')->name('food.create');
+Route::get('/order/success', function () {
+    return view('success');
+});
+});
+Route::middleware('admin')->group(function(){
+    Route::get('dashboard', function () {
+        $foodcount = Food::count();
+        $categorycount = FoodCategory::count();
+        return view('dashboard',compact('foodcount','categorycount'));
+    });
+    Route::get('delivery-cost/', 'DeliveryController@index')->name('del.index');
+    Route::get('delivery-cost/create', 'DeliveryController@create')->name('del.create');
+    Route::post('delivery-cost/create', 'DeliveryController@store')->name('del.store');
+    Route::get('/food/create', 'FoodController@create')->name('food.create');
 Route::post('/food/create', 'FoodController@store')->name('food.store');
-Route::resource('/food', 'FoodController')->except(["create", "edit"]);
+Route::delete('food/{id}', 'FoodController@destroy')->name('food.delete');
+Route::get('/food', 'FoodController@index')->name('food.index');
 
 Route::get('/category/create', 'FoodCategoryController@create')->name('cat.create');
 Route::post('/category/create', 'FoodCategoryController@store')->name('cat.store');
 Route::get('/categories', 'FoodCategoryController@index')->name('cat.index');
-
+Route::delete('category/{id}/delete', 'FoodCategoryController@destroy')->name('cat.delete');
+//Orders
+Route::get('/orders/dispatched', 'OrderController@dispatchedOrders')->name('order.dispatched');
+Route::get('/orders/pending', 'OrderController@pendingOrders')->name('order.pending');
 Route::get('/orders', 'OrderController@index')->name('order.index');
+Route::post('/order/dispatch/{order_id}', 'OrderController@dispatch')->name('order.dispatch');
 Route::get('/orders/{order_id}', 'OrderController@show')->name('order.show');
-Route::get('/order/success', function () {
-    return view('success');
-});
 });
 Route::post('/checkout', "OrderController@store")->name('order.store');
 //Route::resource('/order', "OrderController");

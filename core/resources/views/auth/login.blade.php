@@ -1,5 +1,5 @@
 @extends('layouts.masterpageweb')
-
+@section('title','Login')
 @section('content')
 
 <br>
@@ -64,6 +64,8 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+
+                                <p>Don't have an account? <a class="btn-link" href="{{route('register')}}">Register</a></p>
                             </div>
                         </div>
                     </form>

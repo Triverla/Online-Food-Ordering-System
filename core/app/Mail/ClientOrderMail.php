@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ClientBookingEmail extends Mailable
+class ClientOrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class ClientBookingEmail extends Mailable
      */
     public function build()
     {
-       return $this->from('connect@niconluxury.com','NICON Luxury')->subject('Booking Confirmation')->view('ClientEmail_template')->with('data', $this->data);
+       return $this->from('orders@puzzosrestaurant.com','Puzzos Restaurant')->subject('Order Confirmation- '.$this->data['order_id'])->view('client_order_template')->with('data', $this->data);
 
     }
 }

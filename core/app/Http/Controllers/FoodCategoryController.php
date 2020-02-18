@@ -75,8 +75,9 @@ class FoodCategoryController extends Controller
         $category = FoodCategory::find($id);
         $category->fill($request->all());
         if ($category->save())
-            return response('',200);
-        return response('',500);
+        toast('Category updated successfully!','success');
+            return redirect()->back();
+        return redirect()->back();
     }
 
     /**
@@ -89,7 +90,9 @@ class FoodCategoryController extends Controller
     {
         $category = FoodCategory::find($id);
         if ($category->delete())
-            return response('',200);
-        return response('',500);
+            toast('Category deleted successfully!','success');
+            return redirect()->back();
+        toast('Deletion Failed','success');
+        return redirect()->back();
     }
 }

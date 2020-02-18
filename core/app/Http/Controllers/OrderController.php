@@ -10,6 +10,11 @@ use App\Delivery;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 use DB;
+use Response;
+Use Alert;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AdminOrderMail;
+use App\Mail\ClientOrderMail;
 
 class OrderController extends Controller
 {
@@ -48,8 +53,9 @@ class OrderController extends Controller
                 ];
      
                 session()->put('cart', $cart);
+                toast('Product added to cart successfully!','success');
      
-                return redirect()->back()->with('success', 'Product added to cart successfully!');
+                return redirect()->back();
             }
      
             // if cart not empty then check if this product exist then increment quantity
@@ -58,8 +64,9 @@ class OrderController extends Controller
                 $cart[$id]['quantity']++;
      
                 session()->put('cart', $cart);
+                toast('Product added to cart successfully!','success');
      
-                return redirect()->back()->with('success', 'Product added to cart successfully!');
+                return redirect()->back();
      
             }
      
@@ -73,20 +80,38 @@ class OrderController extends Controller
             ];
      
             session()->put('cart', $cart);
-     
-            return redirect()->back()->with('success', 'Product added to cart successfully!');
+            toast('Product added to cart successfully!','success');
+            return redirect()->back();
         }
     }
   
-    public function updatecart(Request $request)
+    //Increment Quantity
+    public function updatecart($id)
     {
-        if($request->id and $request->quantity)
+        if($id)
         {
             $cart = session()->get('cart');
  
-            $cart[$request->id]["quantity"] = $request->quantity;
+            $cart[$id]["quantity"]++;
  
             session()->put('cart', $cart);
+            toast('Cart Updated successfully!','success');
+ 
+            session()->flash('success', 'Cart updated successfully');
+        }
+    }
+
+    //Decrement Qty
+    public function subQty($id)
+    {
+        if($id)
+        {
+            $cart = session()->get('cart');
+ 
+            $cart[$id]["quantity"]--;
+ 
+            session()->put('cart', $cart);
+            toast('Cart Updated successfully!','success');
  
             session()->flash('success', 'Cart updated successfully');
         }
@@ -104,7 +129,7 @@ class OrderController extends Controller
  
                 session()->put('cart', $cart);
             }
- 
+            toast('Product removed from cart successfully!','success');
             session()->flash('success', 'Product removed successfully');
         }
     }
@@ -168,9 +193,10 @@ class OrderController extends Controller
             'date' => now()
         ];
 
-        //Mail::to($email)->send(New ClientOrderMail($data));
-        //Mail::to('yusufbenaiah@gmail.com')->send(New AdminOrderMail($data));
+        Mail::to(auth()->user()->email)->send(New ClientOrderMail($data));
+        Mail::to('orders@puzzosrestaurant.com')->send(New AdminOrderMail($data));
          //session()->flush();
+        toast('Order Successful!','success');
         return view('success', compact('data')); 
     }
     
@@ -219,5 +245,40 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function dispatch($id){
+        $response = array();
+        $response['code'] = 400;
+        
+        $order = Order::where('order_id',$id)->get();
+        foreach($order as $ord){
+        if($ord->status == 1){
+            $ord->status = 0;
+            if ($ord->save()){
+            $response['code'] = 200;
+            $response['type'] = 'cancel';
+            toast('Dispatch cancelled!','success');
+            }
+        }else{
+        $ord->status = 1;
+        if ($ord->save()){
+            $response['code'] = 200;
+            $response['type'] = 'dispatch';
+            toast('Order Dispatched','success');
+        }
+        }
+    }
+        return Response::json($response);
+    }
+
+    public function dispatchedOrders(){
+        $orders = Order::where('status',1)->paginate(10);
+        return view('orders.dispatch',compact('orders'));
+    }
+
+    public function pendingOrders(){
+        $orders = Order::where('status',0)->paginate(10);
+        return view('orders.pending',compact('orders'));
     }
 }

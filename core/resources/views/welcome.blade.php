@@ -1,8 +1,106 @@
-@extends('layouts.masterpageweb')
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
 
-<!--Carousel Wrapper-->
-<section id="section-home" style="min-height: 500px; background-size: cover; background-repeat: no-repeat;">
+<head>
+  <!-- 
+    More Templates Visit ==> Free-Template.co
+    -->
+  <title>Puzzo Restaurant</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="puzzo" />
+  <meta name="keywords"
+    content="free bootstrap 4, free bootstrap 4 template, free website templates, free html5, free template, free website template, html5, css3, mobile first, responsive" />
+  <meta name="author" content="Free-Template.co" />
+  <link href="images/logo3.png" rel="icon">
+  <link href="images/logo3.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+  <link rel="stylesheet" href="css/animate.css">
+
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="css/magnific-popup.css">
+
+  <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+
+
+  <link rel="stylesheet" href="css/icomoon.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body data-spy="scroll" data-target="#ftco-navbar" data-offset="200">
+
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><a href="index.html"><img src="images/logo.png" alt="" title=""
+            width="120px"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+          aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="oi oi-menu"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active"><a href="#section-home" class="nav-link">HOME</a></li>
+            <li class="nav-item"><a href="#section-about" class="nav-link">ABOUT</a></li>
+            <li class="nav-item"><a href="#section-offer" class="nav-link">GALLERY</a></li>
+            <li class="nav-item"><a href="{{url('menu#menu')}}" class="nav-link">MENU</a></li>
+            <li class="nav-item"><a href="#section-contact" class="nav-link">CONTACT</a></li>
+            @guest
+            <li class="nav-item"><a href="{{route('login')}}" class="nav-link">LOGIN</a></li>
+            <li class="nav-item"><a href="{{route('register')}}" class="nav-link">REGISTER</a></li>
+            @else
+            @if(auth()->user()->is_admin == 1)
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               ADMIN
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{route('cat.index')}}">Categories</a>
+                <a class="dropdown-item" href="{{url('food')}}">Products</a>
+                <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{route('order.index')}}">Manage Orders</a>
+              <a class="dropdown-item" href="{{route('order.index')}}">View Payments</a>
+              </div>
+            </li>
+            @endif
+            <li class="nav-item dropdown">
+              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                  {{ Auth::user()->name }} <span class="caret"></span>
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{route('account')}}">Account</a>
+                <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{{ route('logout') }}"
+                     onclick="event.preventDefault();
+                                   document.getElementById('logout-form').submit();">
+                      {{ __('Logout') }}
+                  </a>
+
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                      @csrf
+                  </form>
+              </div>
+          </li>
+            @endguest
+            <li class="nav-item"><a class="btn btn-primary" href="tel: 2348112233689" class="nav-link"><i
+                  class="fa fa-phone"></i> +2348112233689</a></li>
+          </ul>
+        </div>
+    </div>
+  </nav>
+  <!-- END nav -->
+
+  <!--Carousel Wrapper-->
+  <section id="section-home" style="min-height: 500px; background-size: cover; background-repeat: no-repeat;">
     <div id="carousel-example-2" class="carousel slide carousel-fade" data-ride="carousel">
       <!--Indicators-->
       <ol class="carousel-indicators">
@@ -92,79 +190,65 @@
   <!-- END section -->
 
 
-  <section class="ftco-cover" style="background-image: url(images/puzzo-c.jpg);" id="section-home">
+  <section  class="ftco-cover" style="background-image: url(images/val.jpg);"id="section-home">
     <div class="container">
-      <div class="row ftco-vh-80">
-        <div class="col-md-12">
-          <h1 class="ftco-heading align-items-center justify-content-center text-center ftco-animate mb-3">Puzzo's
-            Christmas package</h1>
-          <p style="color: rgb(255, 255, 255);" class="align-items-center justify-content-center text-center">Dine,
-            Celebrate and Be Merry this Festive
-            season at Puzzo’s Restaurant, Abuja’s home of Multi cuisine!
-            To Celebrate the Festive season we have created the most amazing Packages for you and your family to relax,
-            enjoy & create lasting memories.
-          </p>
-          <p style="color: white;" class="align-items-center justify-content-center text-center">Packages are as
-            follows: </p>
-          <div class="row" style="color: white;">
-            <div class="col-md-6">
-              <h6>COUPLES - N15, 000</h6>
-              <ol>
-                <li>A 3 Course Meal</li>
-                <li>Glasses of Red or White Wine</li>
-                <li>Water</li>
-                <li>A chance to participate in a Raffle draw to win mind blowing prizes!!!</li>
-              </ol>
-            </div>
-            <div class="col-md-6">
-              <h6>FAMILY OF FIVE -N25, 000</h6>
-              <ol>
-                <li>A 3 Course Meal</li>
-                <li>Glasses of Red or White Wine</li>
-                <li>Water</li>
-                <li>Scoops of Ice Cream for the Kids</li>
-                <li>A chance to participate in a Raffle draw to win mind blowing prizes!!!</li>
-              </ol>
-            </div>
-          </div>
-          <h4 class="text-center" style="color: white">Enjoy the above Packages from <span style="color: white;">21st
-              December, 2019 – 25th December
-              2019</span>.</h4>
-          <div class="row" style="color: white;">
-            <div class="col-md-6">
-              <h5 style="color: white">Prizes to be won are as follows</h5 style="color: white">
-              <p style="color: white;"><b>1st Prize</b> - Couples Getaway at the Luxurious Caledonian Suites Abuja</p
-                style="color: black;">
-              <p style="color: white;"><b>2nd Prize</b> - A Moet Infused Gift Hamper</p style="color: black;">
-              <p style="color: white;"><b>3rd Prize</b> - A Gift Hamper from MultiPro, producers/distributors of Power
-                Oil, Indomie Noodles, Minimie Chin Chin etc </p style="color: black;">
-            </div>
-            <div class="col-md-6">
-              <h5 style="color: white">Terms and Conditions</h5>
-              <ul>
-                <li>Package is not to be applied with other discounts.</li>
-                <li>Package is “ONLY” applicable within the stated dates.</li>
-                <li> Package only covers items listed on the Christmas Package Menu; however usual orders can be taken,
-                  exclusive of the package benefits.</li>
-                <li>Family Package entertains only Two Adults i:e Two Adults & 3 Children.</li>
-                <li> To participate in the raffle draw you must dine using the Christmas Package.</li>
+    <div class="row">
+      <div class="col-md-4">
+        <h4>Dine, Dance & Love at Puzzo’s Restaurant this Season!</h4>
+        <p style="color: black">Couples Package starting from <span style="color: red"><b>N14,999</b></span> Inclusive of:</p>
+        <ul style="color: black">
+<li>A 3 Course Meal</li>
+<li>Free Glasses of Wine and Bottled Water</li>
+<li>A Valentine Cake.</li>
+<li>Fresh Rose for the Lady.</li>
+<li>Access to a Valentine Photo Booth & Picture taken by a professional photographer!</li>
+<li>All Couples are automatically eligible for a raffle draw to win</li>
+<li>A Romantic Staycation at Caledonian Suites</li>
+<li>A Massage Session or Manicure or Pedicure Session</li>
+<li>A lovely Valentine themed hamper!</li>
+        </ul>
+        <p style="color: black" class="text-center"><i>Call <a style="color: red;" href="tel://+2348112233689" class="btn-link">+2348112233689</a> for Reservation<br>
+          Ts & Cs Apply!</i></p>
 
-              </ul>
-            </div>
-          </div>
-          <h2 style="color: rgb(255, 255, 255)" class="text-center">Official Sponsors</h2>
-          <div class="row">
-            <div class="col-md-6 text-center">
-              <img src="images/caledoni.jpg" class="img-responsive" alt="" width="250" height="150">
-            </div>
-            <div class="col-md-6 text-center">
-              <img src="images/moet.jpg" class="img-responsive" alt="" width="250" height="150">
-            </div>
-          </div>
-
-        </div>
       </div>
+      <div class="col-md-4">
+        <h4>Puzzo’s Restaurant Breakfast Package.</h4>
+        <p style="color: black">Days: Mondays – Saturdays</p>
+        <p style="color: black">Price: &#x20A6;3500 Naira Only</p>
+        <p style="color: black">We offer you a wide variation of Nigerian & Continental Breakfast on our A la carte
+          Menu.
+          From Plantains, Yams, Fresh Fruit Platters, Cereals, Fresh Fruit Juices, Eggs, Bacon , Freshly made
+          scrumptious pastries(bread slices,cakes,croissant) and lots more! We offer the best breakfast in Abuja with
+          unbeatable prices too
+          You can call to place your Orders and have your meals delivered to your homes or offices or call to pick up
+          your freshly made meals.</p>
+
+      </div>
+      <div class="col-md-4" style="background-image: url(images/val1.jpg);">
+        <h4>Sunday Brunch at Puzzo’s Restaurant!</h4>
+        <p style="color: black">Time: 10a.m -3.p.m</p>
+        <p style="color: black">Price : &#x20A6;5000</p>
+        <p style="color: black">Our Sunday Brunch offers you the best way to relax and enjoy beautiful moments with
+          family and
+          friends with great music, breath-taking views and the tastiest variety of meals!
+          Enjoy an endless flow of the best Nigerian and Continental Meals all through your visit.</p>
+
+        <h4>Terms and Conditions Apply</h4>
+        <ul style="color: black">
+          <li>Diners are not allowed to take out after eating.</li>
+          <li>Take Away Options are only available on management discretion</li>
+          <li>Stated prices are for one person only</li>
+        </ul>
+      </div>
+      <div class="col-md-12">
+      <p style="color: black" class="text-center"><i>
+        Valentine’s Package.
+        Love is in the air!!
+</i>
+      </p>
     </div>
+    </div>
+</div>
   </section>
 
 
@@ -182,10 +266,47 @@
           </div>
         </div>
         <div class="col-md-4 ftco-animate">
+          <a href="images/image0.jpeg" class="ftco-thumbnail image-popup">
+            <img src="images/image0.jpeg" alt="puzzo" class="img-fluid">
+          </a>
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <a href="images/image1.jpeg" class="ftco-thumbnail image-popup">
+            <img src="images/image1.jpeg" alt="puzzo" class="img-fluid">
+          </a>
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <a href="images/image2.jpeg" class="ftco-thumbnail image-popup">
+            <img src="images/image2.jpeg" alt="puzzo" class="img-fluid">
+          </a>
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <a href="images/image3.jpg" class="ftco-thumbnail image-popup">
+            <img src="images/image3.jpg" alt="puzzo" class="img-fluid">
+          </a>
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <a href="images/image4.jpg" class="ftco-thumbnail image-popup">
+            <img src="images/image4.jpg" alt="puzzo" class="img-fluid">
+          </a>
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <a href="images/image5.jpg" class="ftco-thumbnail image-popup">
+            <img src="images/image5.jpg" alt="puzzo" class="img-fluid">
+          </a>
+        </div>
+        <div class="col-md-4 ftco-animate">
+          <a href="images/image6.jpg" class="ftco-thumbnail image-popup">
+            <img src="images/image6.jpg" alt="puzzo" class="img-fluid">
+          </a>
+        </div>
+
+        <div class="col-md-4 ftco-animate">
           <a href="images/bg1.JPG" class="ftco-thumbnail image-popup">
             <img src="images/bg1.JPG" alt="puzzo" class="img-fluid">
           </a>
         </div>
+
         <div class="col-md-4 ftco-animate">
           <a href="images/bg10.JPG" class="ftco-thumbnail image-popup">
             <img src="images/bg10.JPG" alt="puzzo" class="img-fluid">
@@ -346,9 +467,9 @@
   <footer class="ftco-footer ftco-bg-dark ftco-section" id="section-contact">
     <div class="container">
       <div class="row mb-5">
-        <div class="col-md-6">
+        <div class="col-md-8">
           <div class="row">
-            <div class="col-md ftco-animate">
+            <div class="col-md-4 ftco-animate">
               <div class="ftco-footer-widget mb-3">
                 <p class="ftco-heading-2"><img src="images/logo.png" alt="" title="" width="180px"></p>
                 <p>
@@ -359,7 +480,7 @@
                   Wuse 2, Abuja</p>
               </div>
             </div>
-            <div class="col-md ftco-animate">
+            <div class="col-md-4 ftco-animate">
               <div class="ftco-footer-widget mb-1">
                 <h2 class="ftco-heading-2">Quick Links</h2>
                 <ul class="list-unstyled">
@@ -370,7 +491,7 @@
                 </ul>
               </div>
             </div>
-            <div class="col-md ftco-animate">
+            <div class="col-md-4 ftco-animate">
               <div class="ftco-footer-widget mb-1">
                 <h2 class="ftco-heading-2">Hours</h2>
                 <ul class="list-unstyled">
@@ -388,10 +509,13 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="ftco-footer-widget mb-4">
             <h2 class="ftco-heading-2">Facebook</h2>
-            <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FPuzzosretaurant&tabs=timeline&width=320&height=400&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="320" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+            <iframe
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FPuzzosretaurant&tabs=timeline&width=320&height=400&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+              width="320" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+              allowTransparency="true" allow="encrypted-media"></iframe>
           </div>
         </div>
       </div>
@@ -405,4 +529,34 @@
 
   <!-- END Modal -->
 
-  @endsection
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+      <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+        stroke="#F96D00" /></svg></div>
+
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/jquery.timepicker.min.js"></script>
+
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/instafeed.min.js"></script>
+
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false">
+  </script>
+  <script src="js/google-map.js"></script>
+
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>

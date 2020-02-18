@@ -1,13 +1,13 @@
 @extends('layouts.masterpageweb')
-@section('title', 'Orders')
+@section('title', 'Pending Orders')
  
 @section('content')
 <br>
 <div class="container">
     <h2 class="text-center">Orders</h2><nav class="nav nav-pills nav-justified">
-        <a class="nav-link active" href="{{route('order.index')}}">All Orders</a>
+        <a class="nav-link" href="{{route('order.index')}}">All Orders</a>
         <a class="nav-link" href="{{route('order.dispatched')}}">Dispatched Orders</a>
-        <a class="nav-link" href="{{route('order.pending')}}">Pending Orders</a>
+        <a class="nav-link active" href="{{route('order.pending')}}">Pending Orders</a>
       </nav>
 
 <table class="table table-hover table-striped" style="color: black">

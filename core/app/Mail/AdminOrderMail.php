@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AdminNotificationEmail extends Mailable
+class AdminOrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class AdminNotificationEmail extends Mailable
      */
     public function build()
     {
-       return $this->from('connect@niconluxury.com','NICON Luxury')->subject('Booking Notification')->view('AdminEmail_template')->with('data', $this->data);
+       return $this->from('orders@puzzosrestaurant.com','Puzzos Restaurant')->subject('Order From '.$this->data['name'])->view('admin_order_template')->with('data', $this->data);
 
     }
 }

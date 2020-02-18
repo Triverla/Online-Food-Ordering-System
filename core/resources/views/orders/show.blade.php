@@ -4,10 +4,17 @@
 @section('content')
 <br>
 <div class="container">
-    <div class="col-md-6 offset-3" style="color:green">
+    <div class="" style="color:green">
     
-        <table class="table table-bordered table-striped">
-        <h4>Order Details</h4>
+        <table class="table table-bordered table-striped table-responsive fixed-table-body">
+           
+        <h4>Order Details<p class="float-right">Status:@if($order[0]->status == 1)
+            <span class="badge badge-primary">Dispatched</span>
+        @else
+        <span class="badge badge-warning">Pending</span>
+        @endif
+        </p> </h4>
+
         <table id="cart" class="table table-hover table-condensed">
             <thead>
             <tr>
@@ -53,7 +60,4 @@
         </table>
     </div>
 </div>
-@php
-  session()->flush();   
-@endphp
 @endsection

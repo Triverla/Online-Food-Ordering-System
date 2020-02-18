@@ -14,6 +14,7 @@
         Below is a summary of your order.
     </p>
     <div class="card">
+        <div class="card-body">
         <table class="table table-bordered table-striped">
             <thead>
                 <th>Name</th>
@@ -42,12 +43,12 @@
                 </tr>
                 <tr>
                     <td>Order Date</td>
-                    <td>{{$data['date']->format('F M, Y h:ia')}}</td>
+                    <td>{{$data['date']->format('d F, Y h:ia')}}</td>
                 </tr>
             </tbody>
         </table>
         <h4>Order Details</h4>
-        <table id="cart" class="table table-hover table-condensed">
+        <table id="cart" class="table table-sm table-hover table-condensed table-responsive">
             <thead>
             <tr>
                 <th style="width:50%">Product</th>
@@ -101,6 +102,7 @@
         </table>
         <p class="text-center"><i><b>Thank you for choosing Puzzo's Restaurant</b><br>
             We'll be glad to have you back</i></p>
+    </div>
     </div>
 </div>
 </div>

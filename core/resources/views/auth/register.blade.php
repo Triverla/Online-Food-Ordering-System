@@ -1,5 +1,5 @@
 @extends('layouts.masterpageweb')
-
+@section('title','Register')
 @section('content')
 
 <br>

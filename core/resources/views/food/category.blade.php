@@ -10,7 +10,7 @@
         <thead>
             <th>ID</th>
             <th>Name</th>
-            <th>Actions</th>
+            <th colspan="2" class="text-center">Actions</th>
         </thead>
         <tbody>
             @foreach ($categories as $cat)
@@ -20,7 +20,13 @@
             <td>
                 <a class="text-success" href=""><i class="fa fa-eye"></i>
                 <a class="text-info" href=""><i class="fa fa-edit"></i>
-                <a class="text-danger" href=""><i class="fa fa-trash"></i>
+            </td>
+            <td>
+                <form action="{{ route('cat.delete', $cat->id)}}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn-link" type="submit"><i class="fa fa-trash"></i></button>
+                      </form>
             </td>
         </tr>    
                 @endforeach

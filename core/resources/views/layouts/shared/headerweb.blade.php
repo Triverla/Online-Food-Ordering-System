@@ -10,11 +10,11 @@
         <div class="collapse navbar-collapse" id="ftco-nav">
           <ul class="navbar-nav ml-auto">
            
-            <li class="nav-item active"><a href="#section-home" class="nav-link">HOME</a></li>
-            <li class="nav-item"><a href="#section-about" class="nav-link">ABOUT</a></li>
-            <li class="nav-item"><a href="#section-offer" class="nav-link">GALLERY</a></li>
+            <li class="nav-item active"><a href="{{url('/#section-home')}}" class="nav-link">HOME</a></li>
+            <li class="nav-item"><a href="{{url('/#section-about')}}" class="nav-link">ABOUT</a></li>
+            <li class="nav-item"><a href="{{url('/#section-offer')}}" class="nav-link">GALLERY</a></li>
             <li class="nav-item"><a href="{{url('menu#menu')}}" class="nav-link">MENU</a></li>
-            <li class="nav-item"><a href="#section-contact" class="nav-link">CONTACT</a></li>
+            <li class="nav-item"><a href="{{url('/#section-contact')}}" class="nav-link">CONTACT</a></li>
             @guest
             <li class="nav-item"><a href="{{route('login')}}" class="nav-link">LOGIN</a></li>
             <li class="nav-item"><a href="{{route('register')}}" class="nav-link">REGISTER</a></li>
@@ -29,6 +29,7 @@
                 <a class="dropdown-item" href="{{url('food')}}">Products</a>
                 <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{route('order.index')}}">Manage Orders</a>
+              <a class="dropdown-item" href="{{route('order.index')}}">View Payments</a>
               </div>
             </li>
             @endif
