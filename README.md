@@ -5,4 +5,8 @@ An online food ordering and delivery system
 * Laravel Framework
 * JavaScript
 
+#### TODO
+* Offline Functionality
+* ReactJS FrontEnd
+
 
